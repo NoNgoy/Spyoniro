@@ -3,7 +3,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getRandomValues } from 'expo-crypto';
 import { BUILTIN_POOLS } from '../data';
 import { customToPool, type CustomPool } from '../logic/customPools';
-import { createSecureRng, maxSpies, planRound } from '../logic/randomizer';
+import { createSecureRng, drawCard, maxSpies, planRound } from '../logic/randomizer';
+import {
+  assignMafiaRoles,
+  type AliasSettings,
+  type HeadsSettings,
+  type MafiaAssignment,
+  type MafiaSettings,
+} from '../logic/partyGames';
 import type { Card, Decks, Player, Pool, RoundPlan, Settings, SpyHistory } from '../logic/types';
 
 export const MIN_PLAYERS = 3;
@@ -20,7 +27,7 @@ export const DEFAULT_SETTINGS: Settings = {
   spyCount: 1,
   randomSpyCount: false,
   chaosMode: false,
-  chaosChance: 0.07,
+  chaosChance: 0.1,
   selectedPoolIds: ['clash_royale'],
   timerMinutes: 5,
   spyHint: true,
@@ -28,9 +35,36 @@ export const DEFAULT_SETTINGS: Settings = {
   hardAntiRepeat: true,
 };
 
+export const DEFAULT_ALIAS: AliasSettings = {
+  teamCount: 2,
+  teamNames: ['Красные', 'Синие', 'Зелёные', 'Жёлтые'],
+  roundSeconds: 60,
+  targetScore: 40,
+  skipPenalty: true,
+  selectedPoolIds: ['clash_royale', 'bloggers', 'games', 'movies_anime', 'memes'],
+};
+export const DEFAULT_HEADS: HeadsSettings = {
+  roundSeconds: 60,
+  useTilt: true,
+  selectedPoolIds: ['bloggers', 'movies_anime', 'games'],
+};
+export const DEFAULT_MAFIA: MafiaSettings = {
+  playerCount: 8,
+  mafiaCount: 2,
+  autoMafiaCount: true,
+  don: false,
+  doctor: true,
+  sheriff: true,
+  maniac: false,
+};
+
 type Persisted = {
   players: Player[];
   settings: Settings;
+  alias: AliasSettings;
+  heads: HeadsSettings;
+  mafia: MafiaSettings;
+  mafiaHistory: SpyHistory;
   history: SpyHistory;
   decks: Decks;
   customPools: CustomPool[];
@@ -38,6 +72,7 @@ type Persisted = {
   roundsPlayed: number;
 };
 
+export type MafiaGame = { players: Player[]; assignments: MafiaAssignment[]; number: number };
 export type CurrentRound = { plan: RoundPlan; players: Player[]; settings: Settings; number: number };
 
 type Ctx = Persisted & {
@@ -47,6 +82,14 @@ type Ctx = Persisted & {
   cardById: (id: string | null) => Card | undefined;
   activePlayers: Player[];
   round: CurrentRound | null;
+  mafiaGame: MafiaGame | null;
+  mafiaPlayers: Player[];
+  updateAlias: (p: Partial<AliasSettings>) => void;
+  updateHeads: (p: Partial<HeadsSettings>) => void;
+  updateMafia: (p: Partial<MafiaSettings>) => void;
+  /** Тянет следующую карточку из общей колоды выбранных пулов (без повторов) */
+  drawWord: (poolIds: string[]) => Card | null;
+  startMafia: () => void;
   updateSettings: (p: Partial<Settings>) => void;
   setPlayerName: (index: number, name: string) => void;
   resetPlayerNames: () => void;
@@ -66,6 +109,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<Persisted>({
     players: defaultPlayers(),
     settings: DEFAULT_SETTINGS,
+    alias: DEFAULT_ALIAS,
+    heads: DEFAULT_HEADS,
+    mafia: DEFAULT_MAFIA,
+    mafiaHistory: {},
     history: {},
     decks: {},
     customPools: [],
@@ -73,6 +120,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     roundsPlayed: 0,
   });
   const [round, setRound] = useState<CurrentRound | null>(null);
+  const [mafiaGame, setMafiaGame] = useState<MafiaGame | null>(null);
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
   // загрузка
   useEffect(() => {
@@ -85,6 +135,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
           ...data,
           players: defaultPlayers().map((p, i) => data.players?.[i] ?? p),
           settings: { ...DEFAULT_SETTINGS, ...(data.settings ?? {}) },
+          alias: { ...DEFAULT_ALIAS, ...(data.alias ?? {}) },
+          heads: { ...DEFAULT_HEADS, ...(data.heads ?? {}) },
+          mafia: { ...DEFAULT_MAFIA, ...(data.mafia ?? {}) },
+          mafiaHistory: data.mafiaHistory ?? {},
         }));
       })
       .catch(() => {})
@@ -196,8 +250,55 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     [poolMap],
   );
 
+  const visibleCards = useCallback(
+    (s: Persisted, poolIds: string[]) => {
+      const out: Record<string, Card[]> = {};
+      for (const id of poolIds) {
+        const pool = poolMap.get(id);
+        if (!pool) continue;
+        const hidden = new Set(s.hidden[id] ?? []);
+        const visible = pool.cards.filter((c) => !hidden.has(c.id));
+        if (visible.length) out[id] = visible;
+      }
+      return out;
+    },
+    [poolMap],
+  );
+
+  const drawWord = useCallback(
+    (poolIds: string[]): Card | null => {
+      const s = stateRef.current;
+      const byPool = visibleCards(s, poolIds);
+      if (!Object.keys(byPool).length) return null;
+      const ids: Record<string, string[]> = {};
+      for (const [k, v] of Object.entries(byPool)) ids[k] = v.map((c) => c.id);
+      const r = drawCard(s.decks, ids, rng);
+      // сразу обновляем ref, чтобы несколько вызовов подряд не вытянули одну карту
+      stateRef.current = { ...s, decks: r.decks };
+      setState((prev) => ({ ...prev, decks: r.decks }));
+      return cardMap.get(r.cardId) ?? null;
+    },
+    [visibleCards, cardMap],
+  );
+
+  const updateAlias = useCallback((p: Partial<AliasSettings>) => setState((s) => ({ ...s, alias: { ...s.alias, ...p } })), []);
+  const updateHeads = useCallback((p: Partial<HeadsSettings>) => setState((s) => ({ ...s, heads: { ...s.heads, ...p } })), []);
+  const updateMafia = useCallback((p: Partial<MafiaSettings>) => setState((s) => ({ ...s, mafia: { ...s.mafia, ...p } })), []);
+
+  const mafiaPlayers = useMemo(
+    () => state.players.slice(0, state.mafia.playerCount).map((p, i) => ({ ...p, name: p.name.trim() || defaultName(i) })),
+    [state.players, state.mafia.playerCount],
+  );
+
+  const startMafia = useCallback(() => {
+    const s = stateRef.current;
+    const out = assignMafiaRoles(mafiaPlayers, s.mafia, s.mafiaHistory, rng);
+    setState((prev) => ({ ...prev, mafiaHistory: out.history }));
+    setMafiaGame((g) => ({ players: mafiaPlayers, assignments: out.assignments, number: (g?.number ?? 0) + 1 }));
+  }, [mafiaPlayers]);
+
   const resetStats = useCallback(() => {
-    setState((s) => ({ ...s, history: {}, decks: {}, roundsPlayed: 0 }));
+    setState((s) => ({ ...s, history: {}, mafiaHistory: {}, decks: {}, roundsPlayed: 0 }));
   }, []);
 
   const value: Ctx = {
@@ -208,6 +309,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     cardById: (id) => (id ? cardMap.get(id) : undefined),
     activePlayers,
     round,
+    mafiaGame,
+    mafiaPlayers,
+    updateAlias,
+    updateHeads,
+    updateMafia,
+    drawWord,
+    startMafia,
     updateSettings,
     setPlayerName,
     resetPlayerNames,

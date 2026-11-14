@@ -49,6 +49,8 @@ export function LobbyScreen({ nav }: { nav: Nav }) {
 
   return (
     <Screen
+      title="🕵️ Шпион"
+      onBack={() => nav.reset({ name: 'home' })}
       footer={
         <Button
           big
@@ -58,12 +60,7 @@ export function LobbyScreen({ nav }: { nav: Nav }) {
         />
       }
     >
-      <View style={{ paddingTop: 8 }}>
-        <Text style={ui.h1}>🕵️ Шпион</Text>
-        <Text style={[ui.muted, { marginTop: 4 }]}>
-          Передавайте телефон по кругу. Сыграно раундов: {g.roundsPlayed}
-        </Text>
-      </View>
+      <Text style={ui.muted}>Передавайте телефон по кругу. Сыграно раундов: {g.roundsPlayed}</Text>
 
       <Section title="Игроки">
         <Stepper
@@ -125,10 +122,22 @@ export function LobbyScreen({ nav }: { nav: Nav }) {
         ) : null}
         <ToggleRow
           label="Хаос-режим"
-          hint="Редкий шанс, что шпионы все — или их нет вообще"
+          hint={`Шанс ${Math.round(st.chaosChance * 100)}% за раунд: поровну «все шпионы» и «шпионов нет»`}
           value={st.chaosMode}
           onChange={(v) => g.updateSettings({ chaosMode: v })}
         />
+        {st.chaosMode ? (
+          <View style={ui.wrap}>
+            {[0.05, 0.1, 0.15, 0.25].map((c) => (
+              <Chip
+                key={c}
+                label={`${Math.round(c * 100)}%`}
+                active={Math.abs(st.chaosChance - c) < 0.001}
+                onPress={() => g.updateSettings({ chaosChance: c })}
+              />
+            ))}
+          </View>
+        ) : null}
         <ToggleRow
           label="Жёсткий анти-повтор"
           hint="Шпион прошлого раунда не станет шпионом снова (при 4+ игроках)"

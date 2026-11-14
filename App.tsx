@@ -12,27 +12,36 @@ import { PoolsScreen } from './src/screens/PoolsScreen';
 import { PoolEditScreen } from './src/screens/PoolEditScreen';
 import { PoolViewScreen } from './src/screens/PoolViewScreen';
 import { ImportScreen } from './src/screens/ImportScreen';
+import { HomeScreen } from './src/screens/HomeScreen';
+import { AliasGameScreen, AliasSetupScreen } from './src/screens/AliasScreens';
+import { HeadsGameScreen, HeadsSetupScreen } from './src/screens/HeadsScreens';
+import { MafiaHostScreen, MafiaRevealScreen, MafiaSetupScreen } from './src/screens/MafiaScreens';
 import { colors } from './src/theme';
 
 /** Минимальный стек-навигатор: без нативных зависимостей, с поддержкой кнопки «Назад» Android */
 function Router() {
   const { loaded } = useGame();
-  const [stack, setStack] = useState<Route[]>([{ name: 'lobby' }]);
+  const [stack, setStack] = useState<Route[]>([{ name: 'home' }]);
+  // счётчик переходов — чтобы экран пересоздавался даже при replace на тот же маршрут
+  const [navKey, setNavKey] = useState(0);
 
-  const nav: Nav = useMemo(
-    () => ({
-      push: (r) => setStack((s) => [...s, r]),
-      replace: (r) => setStack((s) => [...s.slice(0, -1), r]),
-      back: () => setStack((s) => (s.length > 1 ? s.slice(0, -1) : s)),
-      reset: (r) => setStack([r]),
-    }),
-    [],
-  );
+  const nav: Nav = useMemo(() => {
+    const go = (f: (s: Route[]) => Route[]) => {
+      setStack(f);
+      setNavKey((k) => k + 1);
+    };
+    return {
+      push: (r) => go((s) => [...s, r]),
+      replace: (r) => go((s) => [...s.slice(0, -1), r]),
+      back: () => go((s) => (s.length > 1 ? s.slice(0, -1) : s)),
+      reset: (r) => go(() => (r.name === 'home' ? [r] : [{ name: 'home' }, r])),
+    };
+  }, []);
 
   const top = stack[stack.length - 1];
   const onHardwareBack = useCallback(() => {
     // во время раздачи/раунда «Назад» не должен случайно выкинуть из игры
-    if (top.name === 'reveal' || top.name === 'round') return true;
+    if (['reveal', 'round', 'aliasGame', 'headsGame', 'mafiaReveal', 'mafiaHost'].includes(top.name)) return true;
     if (top.name === 'results') {
       nav.reset({ name: 'lobby' });
       return true;
@@ -56,7 +65,27 @@ function Router() {
       </View>
     );
 
+  return <React.Fragment key={navKey}>{renderRoute(top, nav)}</React.Fragment>;
+}
+
+function renderRoute(top: Route, nav: Nav) {
   switch (top.name) {
+    case 'home':
+      return <HomeScreen nav={nav} />;
+    case 'aliasSetup':
+      return <AliasSetupScreen nav={nav} />;
+    case 'aliasGame':
+      return <AliasGameScreen nav={nav} />;
+    case 'headsSetup':
+      return <HeadsSetupScreen nav={nav} />;
+    case 'headsGame':
+      return <HeadsGameScreen nav={nav} />;
+    case 'mafiaSetup':
+      return <MafiaSetupScreen nav={nav} />;
+    case 'mafiaReveal':
+      return <MafiaRevealScreen nav={nav} />;
+    case 'mafiaHost':
+      return <MafiaHostScreen nav={nav} />;
     case 'lobby':
       return <LobbyScreen nav={nav} />;
     case 'reveal':

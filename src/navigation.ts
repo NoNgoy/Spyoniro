@@ -1,5 +1,13 @@
 export type Route =
+  | { name: 'home' }
   | { name: 'lobby' }
+  | { name: 'aliasSetup' }
+  | { name: 'aliasGame' }
+  | { name: 'headsSetup' }
+  | { name: 'headsGame' }
+  | { name: 'mafiaSetup' }
+  | { name: 'mafiaReveal' }
+  | { name: 'mafiaHost' }
   | { name: 'reveal' }
   | { name: 'round' }
   | { name: 'results' }
