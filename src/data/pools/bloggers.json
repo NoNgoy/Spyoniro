@@ -1,0 +1,147 @@
+{
+  "id": "bloggers",
+  "name": "Блогеры и стримеры",
+  "icon": "🎥",
+  "color": "#EF4444",
+  "description": "Ютуберы, стримеры и блогеры: RU + Global",
+  "clusters": [
+    {
+      "id": "ru_twitch",
+      "label": "RU-стримеры Twitch",
+      "tags": ["RU", "Стример"],
+      "cards": [
+        { "name": "Бустер", "similar": ["Эвелон", "Мокривский"] },
+        { "name": "Эвелон", "similar": ["Бустер", "Мокривский"] },
+        { "name": "Братишкин", "similar": ["Дилблин", "Хесус"] },
+        { "name": "Дилблин", "similar": ["Братишкин"] },
+        { "name": "Мокривский", "similar": ["Эвелон", "Бустер"] },
+        { "name": "Строго", "similar": ["Бустер"] },
+        { "name": "Хесус", "similar": ["Братишкин"] },
+        { "name": "Генсуха", "similar": ["Ликс"] },
+        { "name": "Ликс", "similar": ["Генсуха", "Строго"] }
+      ]
+    },
+    {
+      "id": "ru_letsplay",
+      "label": "RU летсплейщики",
+      "tags": ["RU", "YouTube", "Игры"],
+      "cards": [
+        { "name": "Куплинов", "similar": ["Мармок"] },
+        { "name": "Мармок", "similar": ["Куплинов"] },
+        { "name": "Брайн Мапс", "similar": ["Куплинов"] },
+        { "name": "Ивангай", "similar": ["Брайн Мапс"] },
+        { "name": "Фрост", "similar": ["Брайн Мапс"] },
+        { "name": "Компот", "similar": ["Фиксай"], "tags": ["Minecraft"] },
+        { "name": "Фиксай", "similar": ["Компот"], "tags": ["Minecraft"] }
+      ]
+    },
+    {
+      "id": "ru_shows",
+      "label": "Шоу и челленджи",
+      "tags": ["YouTube", "Шоу"],
+      "cards": [
+        { "name": "А4", "similar": ["Дима Масленников", "MrBeast"], "tags": ["RU"] },
+        { "name": "Дима Масленников", "similar": ["А4"], "tags": ["RU"] },
+        { "name": "Литвин", "similar": ["Эдвард Бил"], "tags": ["RU"] },
+        { "name": "Эдвард Бил", "similar": ["Литвин"], "tags": ["RU"] },
+        { "name": "Exile", "similar": ["Литвин", "Мелстрой"], "tags": ["RU"] },
+        { "name": "Мелстрой", "similar": ["Exile"], "tags": ["RU"] },
+        { "name": "MrBeast", "similar": ["А4", "Mark Rober"], "tags": ["Global"] }
+      ]
+    },
+    {
+      "id": "ru_music",
+      "label": "Блогеры-музыканты",
+      "tags": ["RU", "Музыка"],
+      "cards": [
+        { "name": "Моргенштерн", "similar": ["Егор Крид", "Инстасамка"] },
+        { "name": "Егор Крид", "similar": ["Моргенштерн", "Даня Милохин"] },
+        { "name": "Инстасамка", "similar": ["Моргенштерн"] },
+        { "name": "Даня Милохин", "similar": ["Егор Крид"] },
+        { "name": "Ольга Бузова", "similar": ["Настя Ивлеева"] }
+      ]
+    },
+    {
+      "id": "ru_interview",
+      "label": "Интервью и токшоу",
+      "tags": ["RU", "YouTube"],
+      "cards": [
+        { "name": "Юрий Дудь", "similar": ["Ксения Собчак"] },
+        { "name": "Ксения Собчак", "similar": ["Юрий Дудь", "Настя Ивлеева"] },
+        { "name": "Настя Ивлеева", "similar": ["Ида Галич", "Ольга Бузова"] },
+        { "name": "Ида Галич", "similar": ["Настя Ивлеева"] },
+        { "name": "Wylsacom", "similar": ["Mark Rober"], "tags": ["Техника"] }
+      ]
+    },
+    {
+      "id": "ru_comedy",
+      "label": "Стендап и юмор",
+      "tags": ["RU", "Юмор"],
+      "cards": [
+        { "name": "Данила Поперечный", "similar": ["Слава Комиссаренко"] },
+        { "name": "Слава Комиссаренко", "similar": ["Данила Поперечный"] },
+        { "name": "Ваня Усович", "similar": ["Алексей Щербаков"] },
+        { "name": "Алексей Щербаков", "similar": ["Ваня Усович"] },
+        { "name": "Чикен Карри", "similar": ["Данила Поперечный"] }
+      ]
+    },
+    {
+      "id": "global_streamers",
+      "label": "Мировые стримеры",
+      "tags": ["Global", "Стример"],
+      "cards": [
+        { "name": "IShowSpeed", "similar": ["Kai Cenat"] },
+        { "name": "Kai Cenat", "similar": ["IShowSpeed", "Adin Ross"] },
+        { "name": "xQc", "similar": ["Ninja", "Kai Cenat"] },
+        { "name": "Ninja", "similar": ["xQc"] },
+        { "name": "Pokimane", "similar": ["xQc"] },
+        { "name": "Adin Ross", "similar": ["Kai Cenat"] }
+      ]
+    },
+    {
+      "id": "global_letsplay",
+      "label": "Мировые летсплейщики",
+      "tags": ["Global", "YouTube", "Игры"],
+      "cards": [
+        { "name": "PewDiePie", "similar": ["Markiplier", "Jacksepticeye"] },
+        { "name": "Markiplier", "similar": ["Jacksepticeye", "PewDiePie"] },
+        { "name": "Jacksepticeye", "similar": ["Markiplier"] },
+        { "name": "Dream", "similar": ["Technoblade"], "tags": ["Minecraft"] },
+        { "name": "Technoblade", "similar": ["Dream"], "tags": ["Minecraft"] }
+      ]
+    },
+    {
+      "id": "global_boxers",
+      "label": "Блогеры-боксёры",
+      "tags": ["Global", "Бокс"],
+      "cards": [
+        { "name": "KSI", "similar": ["Logan Paul"] },
+        { "name": "Logan Paul", "similar": ["Jake Paul", "KSI"] },
+        { "name": "Jake Paul", "similar": ["Logan Paul"] },
+        { "name": "Sidemen", "similar": ["KSI"], "tags": ["Группа"] }
+      ]
+    },
+    {
+      "id": "short_video",
+      "label": "Звёзды коротких видео",
+      "tags": ["Global", "TikTok"],
+      "cards": [
+        { "name": "Khaby Lame", "similar": ["Charli D'Amelio"] },
+        { "name": "Charli D'Amelio", "similar": ["Addison Rae", "Khaby Lame"] },
+        { "name": "Addison Rae", "similar": ["Charli D'Amelio"] },
+        { "name": "Bella Poarch", "similar": ["Addison Rae"] }
+      ]
+    },
+    {
+      "id": "edu_science",
+      "label": "Наука и эксперименты",
+      "tags": ["YouTube", "Наука"],
+      "cards": [
+        { "name": "Mark Rober", "similar": ["MrBeast", "Dude Perfect"], "tags": ["Global"] },
+        { "name": "Dude Perfect", "similar": ["Mark Rober"], "tags": ["Global", "Группа"] },
+        { "name": "Утопия Шоу", "similar": ["Редакция"], "tags": ["RU"] },
+        { "name": "Редакция", "similar": ["Утопия Шоу", "Юрий Дудь"], "tags": ["RU"] }
+      ]
+    }
+  ]
+}

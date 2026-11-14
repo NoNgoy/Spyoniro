@@ -1,0 +1,176 @@
+{
+  "id": "games",
+  "name": "Популярные игры",
+  "icon": "🎮",
+  "color": "#22C55E",
+  "description": "Brawl Stars, CS2, Minecraft, Dota 2, GTA и другие",
+  "clusters": [
+    {
+      "id": "bs_brawlers_tank",
+      "label": "Brawl Stars: танки",
+      "tags": ["Brawl Stars", "Боец"],
+      "cards": [
+        { "name": "Булл", "similar": ["Эль Примо"] },
+        { "name": "Эль Примо", "similar": ["Булл", "Роза"] },
+        { "name": "Роза", "similar": ["Эль Примо"] },
+        { "name": "Фрэнк", "similar": ["Булл"] }
+      ]
+    },
+    {
+      "id": "bs_brawlers_dmg",
+      "label": "Brawl Stars: стрелки",
+      "tags": ["Brawl Stars", "Боец"],
+      "cards": [
+        { "name": "Шелли", "similar": ["Кольт"] },
+        { "name": "Кольт", "similar": ["Шелли", "Брок"] },
+        { "name": "Брок", "similar": ["Кольт"] },
+        { "name": "Леон", "similar": ["Ворон"] },
+        { "name": "Ворон", "similar": ["Леон"] },
+        { "name": "Спайк", "similar": ["Ворон"] }
+      ]
+    },
+    {
+      "id": "bs_modes",
+      "label": "Brawl Stars: режимы",
+      "tags": ["Brawl Stars", "Режим"],
+      "cards": [
+        { "name": "Захват кристаллов", "similar": ["Ограбление"] },
+        { "name": "Ограбление", "similar": ["Захват кристаллов"] },
+        { "name": "Столкновение", "similar": ["Броулбол"] },
+        { "name": "Броулбол", "similar": ["Столкновение"] }
+      ]
+    },
+    {
+      "id": "cs_rifles",
+      "label": "CS2: оружие",
+      "tags": ["CS2", "Оружие"],
+      "cards": [
+        { "name": "АК-47", "similar": ["M4A1"] },
+        { "name": "M4A1", "similar": ["АК-47", "M4A4"] },
+        { "name": "M4A4", "similar": ["M4A1"] },
+        { "name": "AWP", "similar": ["Scout (SSG 08)"] },
+        { "name": "Scout (SSG 08)", "similar": ["AWP"] },
+        { "name": "Desert Eagle", "similar": ["Glock-18"] },
+        { "name": "Glock-18", "similar": ["USP-S", "Desert Eagle"] },
+        { "name": "USP-S", "similar": ["Glock-18"] }
+      ]
+    },
+    {
+      "id": "cs_maps",
+      "label": "CS2: карты и механики",
+      "tags": ["CS2"],
+      "cards": [
+        { "name": "Dust II", "similar": ["Mirage"], "tags": ["Карта"] },
+        { "name": "Mirage", "similar": ["Dust II", "Inferno"], "tags": ["Карта"] },
+        { "name": "Inferno", "similar": ["Mirage"], "tags": ["Карта"] },
+        { "name": "Nuke", "similar": ["Inferno"], "tags": ["Карта"] },
+        { "name": "Закладка бомбы (C4)", "similar": ["Дефьюз"], "tags": ["Механика"] },
+        { "name": "Дефьюз", "similar": ["Закладка бомбы (C4)"], "tags": ["Механика"] },
+        { "name": "Смок", "similar": ["Флешка"], "tags": ["Граната"] },
+        { "name": "Флешка", "similar": ["Смок"], "tags": ["Граната"] }
+      ]
+    },
+    {
+      "id": "mc_mobs",
+      "label": "Minecraft: мобы",
+      "tags": ["Minecraft", "Моб"],
+      "cards": [
+        { "name": "Крипер", "similar": ["Зомби"] },
+        { "name": "Зомби", "similar": ["Скелет", "Крипер"] },
+        { "name": "Скелет", "similar": ["Зомби"] },
+        { "name": "Эндермен", "similar": ["Ифрит"] },
+        { "name": "Ифрит", "similar": ["Гаст"] },
+        { "name": "Гаст", "similar": ["Ифрит"] },
+        { "name": "Эндер-дракон", "similar": ["Иссушитель"], "tags": ["Босс"] },
+        { "name": "Иссушитель", "similar": ["Эндер-дракон"], "tags": ["Босс"] },
+        { "name": "Житель", "similar": ["Разбойник"] },
+        { "name": "Разбойник", "similar": ["Житель"] }
+      ]
+    },
+    {
+      "id": "mc_items",
+      "label": "Minecraft: блоки и предметы",
+      "tags": ["Minecraft"],
+      "cards": [
+        { "name": "Алмаз", "similar": ["Незерит"] },
+        { "name": "Незерит", "similar": ["Алмаз"] },
+        { "name": "Динамит", "similar": ["Крипер"] },
+        { "name": "Верстак", "similar": ["Печка"] },
+        { "name": "Печка", "similar": ["Верстак"] },
+        { "name": "Портал в Незер", "similar": ["Портал в Энд"] },
+        { "name": "Портал в Энд", "similar": ["Портал в Незер"] }
+      ]
+    },
+    {
+      "id": "dota_heroes",
+      "label": "Dota 2: герои",
+      "tags": ["Dota 2", "Герой"],
+      "cards": [
+        { "name": "Пудж", "similar": ["Клокверк"] },
+        { "name": "Инвокер", "similar": ["Шторм Спирит"] },
+        { "name": "Шторм Спирит", "similar": ["Инвокер"] },
+        { "name": "Антимаг", "similar": ["Фантом Ассасин"] },
+        { "name": "Фантом Ассасин", "similar": ["Антимаг"] },
+        { "name": "Шейкер", "similar": ["Тайдхантер"] },
+        { "name": "Тайдхантер", "similar": ["Шейкер"] },
+        { "name": "Клокверк", "similar": ["Пудж"] }
+      ]
+    },
+    {
+      "id": "dota_items",
+      "label": "Dota 2: предметы и объекты",
+      "tags": ["Dota 2"],
+      "cards": [
+        { "name": "Рошан", "similar": ["Аегис"] },
+        { "name": "Аегис", "similar": ["Рошан"] },
+        { "name": "Блинк-даггер", "similar": ["Форс стафф"] },
+        { "name": "Форс стафф", "similar": ["Блинк-даггер"] },
+        { "name": "Варды", "similar": ["Смоук"] },
+        { "name": "Смоук", "similar": ["Варды"] }
+      ]
+    },
+    {
+      "id": "gta_chars",
+      "label": "GTA: герои",
+      "tags": ["GTA", "Персонаж"],
+      "cards": [
+        { "name": "Си Джей", "similar": ["Биг Смоук"] },
+        { "name": "Биг Смоук", "similar": ["Си Джей", "Райдер"] },
+        { "name": "Райдер", "similar": ["Биг Смоук"] },
+        { "name": "Тревор", "similar": ["Майкл"] },
+        { "name": "Майкл", "similar": ["Франклин", "Тревор"] },
+        { "name": "Франклин", "similar": ["Майкл"] },
+        { "name": "Томми Версетти", "similar": ["Нико Беллик"] },
+        { "name": "Нико Беллик", "similar": ["Томми Версетти"] }
+      ]
+    },
+    {
+      "id": "gta_world",
+      "label": "GTA: города и мир",
+      "tags": ["GTA"],
+      "cards": [
+        { "name": "Лос-Сантос", "similar": ["Вайс-Сити"] },
+        { "name": "Вайс-Сити", "similar": ["Лос-Сантос", "Либерти-Сити"] },
+        { "name": "Либерти-Сити", "similar": ["Вайс-Сити"] },
+        { "name": "Звёзды розыска", "similar": ["Полицейская погоня"] },
+        { "name": "Полицейская погоня", "similar": ["Звёзды розыска"] },
+        { "name": "Гроув-стрит", "similar": ["Лос-Сантос"] }
+      ]
+    },
+    {
+      "id": "other_games",
+      "label": "Другие хиты",
+      "tags": ["Игра"],
+      "cards": [
+        { "name": "Among Us", "similar": ["Fall Guys"] },
+        { "name": "Fall Guys", "similar": ["Among Us"] },
+        { "name": "Fortnite", "similar": ["PUBG"] },
+        { "name": "PUBG", "similar": ["Fortnite"] },
+        { "name": "Roblox", "similar": ["Minecraft (игра)"] },
+        { "name": "Minecraft (игра)", "similar": ["Roblox"] },
+        { "name": "Standoff 2", "similar": ["CS2 (игра)"] },
+        { "name": "CS2 (игра)", "similar": ["Standoff 2"] }
+      ]
+    }
+  ]
+}
